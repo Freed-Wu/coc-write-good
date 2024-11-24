@@ -1,19 +1,25 @@
 {
-  "name": "write-good-linter",
+  "name": "coc-write-good",
   "displayName": "Write Good Linter",
   "description": "Applies the Write Good Linter to your Markdown, so you can write more good.",
-  "version": "0.1.6",
-  "publisher": "travisthetechie",
+  "version": "0.0.2",
+  "publisher": "Freed-Wu",
   "engines": {
+<<<<<<< HEAD
     "vscode": "^1.95.0"
+||||||| parent of cb4a9a0 (:truck: Port to coc.nvim)
+    "vscode": "^1.89.0"
+=======
+    "coc": "^0.0.80"
+>>>>>>> cb4a9a0 (:truck: Port to coc.nvim)
   },
   "categories": [
     "Linters"
   ],
   "activationEvents": [
-    "onStartupFinished"
+    "*"
   ],
-  "main": "./out/src/extension",
+  "main": "./out/src/extension.js",
   "contributes": {
     "configuration": {
       "type": "object",
@@ -48,8 +54,13 @@
         },
         "write-good.languages": {
           "default": [
+            "plaintext",
+            "gitcommit",
+            "bbcode",
             "markdown",
-            "plaintext"
+            "mdx",
+            "html",
+            "latex"
           ],
           "type": [
             "string",
@@ -71,6 +82,7 @@
     "watch": "tsc -watch -p ./"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.15.0",
     "@types/node": "^22.9.3",
@@ -80,6 +92,21 @@
     "@typescript-eslint/parser": "^8.15.0",
     "eslint": "^9.15.0",
     "typescript": "^5.7.2"
+||||||| parent of cb4a9a0 (:truck: Port to coc.nvim)
+		"@typescript-eslint/eslint-plugin": "^6.7.0",
+		"@typescript-eslint/parser": "^6.7.0",
+		"eslint": "^8.56.0",
+    "@types/node": "^20.12.12",
+    "@types/vscode": "1.89.0",
+    "typescript": "^5.4.5"
+=======
+    "@types/node": "^20.12.12",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "coc.nvim": "^0.0.80",
+    "eslint": "^8.56.0",
+    "typescript": "^5.4.5"
+>>>>>>> cb4a9a0 (:truck: Port to coc.nvim)
   },
   "dependencies": {
     "@types/write-good": "^1.0.3",

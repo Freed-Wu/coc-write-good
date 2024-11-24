@@ -1,5 +1,5 @@
-import { Diagnostic, DiagnosticSeverity, Range, Position } from 'vscode';
-import * as WriteGood from 'write-good';
+import { Diagnostic, DiagnosticSeverity, Range, Position } from 'coc.nvim';
+import { default as WriteGood } from 'write-good';
 
 interface Suggestion {
     index: number,
@@ -13,9 +13,9 @@ export function lintText(content: string, wgConfig: object, startingLine: number
     lines.forEach((line, lineCount) => {
         const suggestions : Suggestion[] = WriteGood(line, wgConfig);
         suggestions.forEach((suggestion) => {
-            const start = new Position(lineCount + startingLine, suggestion.index);
-            const end = new Position(lineCount + startingLine, suggestion.index + suggestion.offset);
-            diagnostics.push(new Diagnostic(new Range(start, end), suggestion.reason, DiagnosticSeverity.Warning));
+            const start = Position.create(lineCount + startingLine, suggestion.index);
+            const end = Position.create(lineCount + startingLine, suggestion.index + suggestion.offset);
+            diagnostics.push(Diagnostic.create(Range.create(start, end), suggestion.reason, DiagnosticSeverity.Warning));
         });
     });
 }

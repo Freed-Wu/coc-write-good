@@ -1,5 +1,5 @@
 import { workspace, ExtensionContext, TextDocument, languages, Uri,
-         Diagnostic, DiagnosticCollection } from 'vscode';
+         Diagnostic, DiagnosticCollection } from 'coc.nvim';
 import { lintText } from './linter';
 
 let diagnosticCollection: DiagnosticCollection;
@@ -28,28 +28,28 @@ export function activate(context: ExtensionContext) {
     }));
 
     // attempt to only lint changes on motification
-    context.subscriptions.push(workspace.onDidChangeTextDocument(event => {
-        if (!isWriteGoodLanguage(event.document.languageId)) {
-            // language is unsupported. 
-            return;
-        }
-
-        const onlyLintOnSave: boolean = workspace.getConfiguration('write-good').get('only-lint-on-save');
-        if (onlyLintOnSave) {
-            // not a save event, so don't bother linting
-            return;
-        }
-
-        // debounce linting on editing
-        const debounceMs: number = workspace.getConfiguration('write-good').get('debounce-time-in-ms');
-        const lastLintMs: number = lastLint.get(event.document.uri.toString()) || 0;
-        const nowMs = (new Date()).getTime();
-        if (lastLintMs + debounceMs < nowMs) {
-            // debounce time is less than now, let's do this
-            console.log("LINTING!!!!");
-            doLint(event.document);
-        }
-    }));
+    //context.subscriptions.push(workspace.onDidChangeTextDocument(event => {
+    //    if (!isWriteGoodLanguage(event.textDocument.languageId)) {
+    //        // language is unsupported. 
+    //        return;
+    //    }
+    //
+    //    const onlyLintOnSave: boolean = workspace.getConfiguration('write-good').get('only-lint-on-save');
+    //    if (onlyLintOnSave) {
+    //        // not a save event, so don't bother linting
+    //        return;
+    //    }
+    //
+    //    // debounce linting on editing
+    //    const debounceMs: number = workspace.getConfiguration('write-good').get('debounce-time-in-ms');
+    //    const lastLintMs: number = lastLint.get(event.textDocument.uri.toString()) || 0;
+    //    const nowMs = (new Date()).getTime();
+    //    if (lastLintMs + debounceMs < nowMs) {
+    //        // debounce time is less than now, let's do this
+    //        console.log("LINTING!!!!");
+    //        doLint(event.textDocument);
+    //    }
+    //}));
 
     // full lint on a new document/opened document
     context.subscriptions.push(workspace.onDidOpenTextDocument(event => {
@@ -75,7 +75,7 @@ function resetDiagnostics() {
     diagnosticCollection.clear();
 
     diagnosticMap.forEach((diags, file) => {
-        diagnosticCollection.set(Uri.parse(file), diags);
+        diagnosticCollection.set(Uri.parse(file).path, diags);
     });
 }
 

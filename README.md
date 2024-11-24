@@ -1,4 +1,32 @@
-# Write Good Linter for Visual Studio Code
+# Write Good Linter for Coc.nvim
+
+Ported from [vscode-write-good](https://github.com/nix-community/vscode-write-good).
+
+![screenshot](https://github.com/user-attachments/assets/8fc14597-2623-4930-97f1-096404dac2da)
+
+Because some APIs of [vscode](https://github.com/microsoft/vscode) are missing in
+[coc.nvim](https://github.com/neoclide/coc.nvim), disable some features
+temporarily:
+
+- `onDidChangeTextDocument`: VS Code expect input is a `TextDocument`, coc.nvim
+  expect input is a `DidChangeTextDocumentParams`. So it will lint when
+  `onDidSaveTextDocument` and `onDidOpenTextDocument`, not
+  `onDidChangeTextDocument`
+
+## Install
+
+- [coc-marketplace](https://github.com/fannheyward/coc-marketplace)
+- [npm](https://www.npmjs.com/package/coc-write-good)
+- vim:
+
+```vim
+" command line
+CocInstall coc-write-good
+" or add the following code to your vimrc
+let g:coc_global_extensions = ['coc-write-good', 'other coc-plugins']
+```
+
+---
 
 Provides a [write-good](https://github.com/btford/write-good) linter extension for [Visual Studio Code](https://code.visualstudio.com/).
 
