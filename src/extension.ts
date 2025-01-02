@@ -1,5 +1,9 @@
 import { workspace, ExtensionContext, TextDocument, languages, Uri,
+    //# #if HAVE_VSCODE
          Diagnostic, DiagnosticCollection } from 'vscode';
+    //# #elif HAVE_COC_NVIM
+    //#  Diagnostic, DiagnosticCollection } from 'coc.nvim';
+    //# #endif
 import { lintText } from './linter';
 
 let diagnosticCollection: DiagnosticCollection;
@@ -20,6 +24,14 @@ export function activate(context: ExtensionContext) {
         return (wgLanguages.indexOf(languageId) > -1 || wgLanguages === '*');
     }
     
+    //# #if HAVE_COC_NVIM
+    //# function didOpenTextDocument(document: TextDocument) {
+    //#     if (isWriteGoodLanguage(document.languageId)) {
+    //#         doLint(document);
+    //#     }
+    //# }
+    //# #endif
+
     // full lint when document is saved
     context.subscriptions.push(workspace.onDidSaveTextDocument(document => {
         if (isWriteGoodLanguage(document.languageId)) {
@@ -28,6 +40,7 @@ export function activate(context: ExtensionContext) {
     }));
 
     // attempt to only lint changes on motification
+    //# #if HAVE_VSCODE
     context.subscriptions.push(workspace.onDidChangeTextDocument(event => {
         if (!isWriteGoodLanguage(event.document.languageId)) {
             // language is unsupported. 
@@ -50,13 +63,21 @@ export function activate(context: ExtensionContext) {
             doLint(event.document);
         }
     }));
+    //# #endif
 
     // full lint on a new document/opened document
+    //# #if HAVE_VSCODE
     context.subscriptions.push(workspace.onDidOpenTextDocument(event => {
         if (isWriteGoodLanguage(event.languageId)) {
             doLint(event);
         }
     }));
+    //# #elif HAVE_COC_NVIM
+    //# context.subscriptions.push(workspace.onDidOpenTextDocument(didOpenTextDocument));
+    //# workspace.documents.map((doc) => {
+    //#     didOpenTextDocument(doc.textDocument);
+    //# });
+    //# #endif
 
     // clean up any lints when the document is closed
     context.subscriptions.push(workspace.onDidCloseTextDocument(event => {
@@ -75,7 +96,11 @@ function resetDiagnostics() {
     diagnosticCollection.clear();
 
     diagnosticMap.forEach((diags, file) => {
+    //# #if HAVE_VSCODE
         diagnosticCollection.set(Uri.parse(file), diags);
+    //# #elif HAVE_COC_NVIM
+    //# diagnosticCollection.set(Uri.parse(file).path, diags);
+    //# #endif
     });
 }
 

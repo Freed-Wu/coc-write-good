@@ -1,0 +1,95 @@
+{
+  "name": "coc-write-good",
+  "displayName": "Write Good Linter",
+  "description": "Applies the Write Good Linter to your Markdown, so you can write more good.",
+  "version": "0.0.3",
+  "publisher": "Freed-Wu",
+  "engines": {
+    "coc": "^0.0.80"
+  },
+  "categories": [
+    "Linters"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/src/extension.js",
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "write-good",
+      "properties": {
+        "write-good.debounce-time-in-ms": {
+          "type": [
+            "null",
+            "number"
+          ],
+          "default": 200,
+          "markdownDescription": "Minimum milliseconds between linting attempts. Default is 200ms, increasing this can reduce load when working with large files. Linting on save and load are not rate limited.",
+          "scope": "resource"
+        },
+        "write-good.only-lint-on-save": {
+          "type": [
+            "null",
+            "boolean"
+          ],
+          "default": false,
+          "markdownDescription": "Disables linting during editing for large files. A save triggers linting.",
+          "scope": "resource"
+        },
+        "write-good.write-good-config": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "default": null,
+          "markdownDescription": "Configuration passed to [write-good](https://www.npmjs.com/package/write-good). Example to enable eprime check is `\"write-good.write-good-config\": { \"eprime\": true }`.",
+          "scope": "resource"
+        },
+        "write-good.languages": {
+          "default": [
+            "plaintext",
+            "gitcommit",
+            "bbcode",
+            "markdown",
+            "mdx",
+            "html",
+            "latex"
+          ],
+          "type": [
+            "string",
+            "array"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Languages to lint with the write-good linter. '*' to enable on all languages.",
+          "scope": "resource"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "patch": "scripts/patch.sh ../src/*.ts",
+    "prepack": "npm run patch && npm run compile",
+    "compile": "tsc -p ./",
+    "lint": "eslint \"src/**/*.ts\"",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "coc.nvim": "^0.0.80",
+    "eslint": "^8.56.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@types/write-good": "^1.0.3",
+    "write-good": "^1.0.8"
+  },
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/TravisTheTechie/vscode-write-good"
+  }
+}
